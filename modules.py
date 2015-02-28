@@ -45,7 +45,13 @@ def move_board(grid, direction):
 		grid = rot90(grid, 2) 
 		apply_along_axis(move,1,grid)
 		grid = rot90(grid, -2)
-		
+
+def add_new_tile(grid):
+	isZero = grid==0
+	new_tile = append(2, zeros(isZero[isZero==True].size-1)
+	random.shuffle(new_tile)	#rearrange randomly where the new tile is among the zeros in grid
+	grid[isZero] = new_tile 	
+
 
 
 		
