@@ -1,8 +1,7 @@
 from numpy import *
 
-all_tiles = zeros(16).reshape(4,4)				#initialize empty tiles
-all_tiles[random.choice(16,2)] = 2		#initialize  2 to random 2 tiles
 
+all_tiles = zeros(16).reshape(4,4)				#initialize empty tiles
 
 def move(col):
 	new_col = zeros(4)
@@ -28,27 +27,26 @@ def move(col):
 
 
 def move_board(grid, direction):
-	if direction == "up":
-		grid = rot90(grid, 1) #rotate grid anticlockwise once
-		apply_along_axis(move,1,grid) #apply move function for all rows in grid
-		grid = rot90(grid, -1)
-
-	if direction == "down":
-		grid = rot90(grid, 3) 
-		apply_along_axis(move,1,grid)
-		grid = rot90(grid, -3)
-
 	if direction == "left":
-		apply_along_axis(move,1,grid)
-
+		grid = apply_along_axis(move,1,grid)
 	if direction == "right":
 		grid = rot90(grid, 2) 
-		apply_along_axis(move,1,grid)
+		grid = apply_along_axis(move,1,grid)
 		grid = rot90(grid, -2)
+	if direction == "down":
+		grid = rot90(grid, 3) 
+		grid = apply_along_axis(move,1,grid)
+		grid = rot90(grid, -3)
+	if direction == "up":
+		grid = rot90(grid, 1) #rotate grid anticlockwise once
+		grid = apply_along_axis(move,1,grid) #apply move function for all rows in grid
+		grid = rot90(grid, -1)
+	return grid
+
 
 def add_new_tile(grid):
 	isZero = grid==0
-	new_tile = append(2, zeros(isZero[isZero==True].size-1)
+	new_tile = append(2, zeros(isZero[isZero==True].size-1) #create the new tile : 2
 	random.shuffle(new_tile)	#rearrange randomly where the new tile is among the zeros in grid
 	grid[isZero] = new_tile 	
 
