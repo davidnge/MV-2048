@@ -46,8 +46,8 @@ def move_board(grid, direction):
 
 def add_new_tile(grid):
 	isZero = grid==0
-	new_tile = append(2, zeros(isZero[isZero==True].size-1) #create the new tile : 2
-	random.shuffle(new_tile)	#rearrange randomly where the new tile is among the zeros in grid
+	new_tile = append(2, zeros(isZero[isZero==True].size-1))
+	random.shuffle(new_tile)	
 	grid[isZero] = new_tile 	
 
 
