@@ -1,7 +1,16 @@
 from numpy import *
 
 
-all_tiles = zeros(16).reshape(4,4)				#initialize empty tiles
+class Grid:
+	def __init__(self):
+		self.grid = zeros(16).reshape(4,4)		#initialize empty tiles
+		add_new_tile(self.grid)
+		add_new_tile(self.grid)
+
+	def get_grid(self):
+		return self.grid
+
+
 
 def move(col):
 	new_col = zeros(4)
@@ -26,7 +35,7 @@ def move(col):
 	return new_col
 
 
-def move_board(grid, direction):
+def move_grid(grid, direction):
 	if direction == "left":
 		grid = apply_along_axis(move,1,grid)
 	if direction == "right":
@@ -43,12 +52,21 @@ def move_board(grid, direction):
 		grid = rot90(grid, -1)
 	return grid
 
+def 
 
 def add_new_tile(grid):
 	isZero = grid==0
 	new_tile = append(2, zeros(isZero[isZero==True].size-1))
 	random.shuffle(new_tile)	
-	grid[isZero] = new_tile 	
+	grid[isZero] = new_tile 
+
+
+def has_next(grid):
+	isZero = grid==0
+	if isZero[isZero==True].size < 1:
+		return False
+	else:
+		return True
 
 
 
