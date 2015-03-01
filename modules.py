@@ -52,21 +52,30 @@ def move_grid(grid, direction):
 		grid = rot90(grid, -1)
 	return grid
 
-def 
-
 def add_new_tile(grid):
 	isZero = grid==0
 	new_tile = append(2, zeros(isZero[isZero==True].size-1))
 	random.shuffle(new_tile)	
 	grid[isZero] = new_tile 
 
-
-def has_next(grid):
-	isZero = grid==0
-	if isZero[isZero==True].size < 1:
+def has_adjacent(grid):
+	Right = "right"
+	Up = "up"
+	Down = "down"
+	Left = "left"
+	grid_copy = copy(grid)
+	if((move_grid(grid_copy, Up)==grid).all() and (move_grid(grid_copy, Down)==grid).all() and (move_grid(grid_copy, Right)==grid).all() and (move_grid(grid_copy, Left)==grid).all()):
 		return False
 	else:
 		return True
+
+def has_next(grid):
+	isZero = grid==0
+	if isZero[isZero==True].size < 1 and has_adjacent(grid)==False:
+		return False
+	else:
+		return True
+
 
 
 
