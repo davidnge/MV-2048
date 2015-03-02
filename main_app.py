@@ -4,6 +4,19 @@ from tkFont import Font
 from modules import *
 
 
+def displayImg(root=None, status=None):
+	winner = "winner.gif"
+	loser = "loser.gif"
+	img = None
+	if status == "loser":
+		img = PhotoImage(file=loser)
+	elif status == "winner":
+		img = PhotoImage(file=winner)
+
+	imgLabel = Label(root, image=img, height=480, width=480)
+	imgLabel.photo = img
+	imgLabel.pack()
+
 def key_listener(event, grid=None, labelList=None, root=None):
 	gridArray = grid.get_grid()
 
@@ -14,6 +27,11 @@ def key_listener(event, grid=None, labelList=None, root=None):
 		key = '{}'.format(event.keysym)
 		prev = gridArray
 		gridArray = grid.move_grid(key_dict[key])
+
+		# wins the game
+		if amax(gridArray) == 2048:
+			winner = "winner"
+			displayImg(root=root, status=winner)
 
 		if (gridArray == prev).all():
 			pass
@@ -28,10 +46,8 @@ def key_listener(event, grid=None, labelList=None, root=None):
 
 	#Lose Game
 	else:
-		loseImg = PhotoImage(file="loser.gif")
-		lose = Label(root, image=loseImg, height=480, width=480)
-		lose.photo = loseImg
-		lose.pack()
+		loser = "loser"
+		displayImg(root=root, status=loser)
 
 
 if __name__ == '__main__':
