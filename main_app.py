@@ -3,6 +3,7 @@ from Tkinter import *
 from tkFont import Font
 from modules import *
 
+color_dict = { 2: ('#776e65', '#eee4da'), 4: ('#776e65', '#ede0c8'), 8: ('#f9f6f2', '#f2b179'), 16: ('#f9f6f2', '#f59563'), 32: ('#f9f6f2', '#f67c5f'), 64: ('#f9f6f2', '#f65e3b'), 128:('#f9f6f2', '#edcf72'), 256: ('#f9f6f2', '#edcc61'), 512: ('#f9f6f2', '#edc850'),1024: ('#f9f6f2', '#edc53f'),2048: ('#f9f6f2', '#edc22e'), 'base' : '#ccc0b3'}
 
 def displayImg(root=None, status=None):
 	winner = "winner.gif"
@@ -19,7 +20,6 @@ def displayImg(root=None, status=None):
 
 def key_listener(event, grid=None, labelList=None, root=None):
 	gridArray = grid.get_grid()
-
 	#Can still play
 	if grid.has_next(gridArray) == True:
 
@@ -27,7 +27,6 @@ def key_listener(event, grid=None, labelList=None, root=None):
 		key = '{}'.format(event.keysym)
 		prev = gridArray
 		gridArray = grid.move_grid(key_dict[key])
-
 		# wins the game
 		if amax(gridArray) == 2048:
 			winner = "winner"
@@ -39,10 +38,10 @@ def key_listener(event, grid=None, labelList=None, root=None):
 			grid.add_new_tile(gridArray)
 
 		grid.grid = gridArray
-
+		root.title('Your Score: {}'.format(int(grid.get_score())))
 		for (m, n), value in ndenumerate(gridArray):
 			text = '{}'.format('' if (gridArray[m][n])==0 else int(gridArray[m][n]))
-			labelList[4*m+n].config(text=text)
+			labelList[4*m+n].config(text=text, fg=color_dict['base'] if (gridArray[m][n])==0 else color_dict[value][0], bg=color_dict['base'] if (gridArray[m][n])==0 else color_dict[value][1])
 
 	#Lose Game
 	else:
@@ -59,12 +58,13 @@ if __name__ == '__main__':
 	root.geometry("480x480")
 	gridSize = 480
 	labelList = []
+	root.title('Bring it on!')
 	for (m, n), value in ndenumerate(gridArray):
 	    frame = Frame(root, width=gridSize/4-2, height=gridSize/4-2)
 	    font = Font(family='Clear Sans', weight='bold', size=40)
 	    frame.pack_propagate(0)
 	    frame.place(x=n*gridSize/4+1, y=m*gridSize/4+1)
-	    label = Label(frame, text='{}'.format('' if (gridArray[m][n])==0 else int(gridArray[m][n])), font=font, fg='#ffffff', bg='#000000')
+	    label = Label(frame, text='{}'.format('' if (gridArray[m][n])==0 else int(gridArray[m][n])), font=font, fg='#776e65', bg=color_dict['base'] if (gridArray[m][n])==0 else color_dict[value][1])
 	    label.pack(fill=BOTH, expand=True)
 	    labelList.append(label)
 
