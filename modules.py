@@ -4,9 +4,9 @@ from numpy import *
 class Grid:
 
 	def __init__(self):
-		self.grid = zeros(16).reshape(4,4)		#initialize empty tiles
-		self.add_new_tile(self.grid)
-		self.add_new_tile(self.grid)
+		self.grid = zeros(16).reshape(4,4)		#initialize 4x4 empty tiles
+		self.add_new_tile(self.grid)			# add first "2" at random tile
+		self.add_new_tile(self.grid)			# add second "2" at random tile
 		self.score = 0
 
 	def get_grid(self):
@@ -15,32 +15,32 @@ class Grid:
 	def get_score(self):
 		return self.score 
 
-	def move(self, col):
-		new_col = zeros(4)
+	# move one row to the left and merge adjacent tiles that are the same
+	def move(self, row):
+		new_row = zeros(4)
 
 		j = 0
 		prev = None
-		for i in range(col.size):
-			if col[i] != 0:
+		for i in range(row.size):
+			if row[i] != 0:
 				if prev == None:
-					prev = col[i]
+					prev = row[i]
 				else:
-					if col[i] == prev:
-						new_col[j] = 2*col[i]
-						self.score += new_col[j]
-						print self.score
-						col[i] = 0
+					if row[i] == prev:
+						new_row[j] = 2*row[i]
+						self.score += new_row[j]
+						row[i] = 0
 						prev = None
 						j+=1
 					else: 
-						new_col[j] = prev
-						prev = col[i]
+						new_row[j] = prev
+						prev = row[i]
 						j+=1
 		if prev != None:
-			new_col[j] = prev
-		return new_col
+			new_row[j] = prev
+		return new_row
 
-
+	# move and merge all rows in grid to the left, rotate grid prior moving rows
 	def move_grid(self, direction):
 		if direction == "left":
 			self.grid = apply_along_axis(self.move,1,self.grid)
@@ -59,12 +59,14 @@ class Grid:
 
 		return self.grid
 
+	# add new "2" tile at random
 	def add_new_tile(self, grid):
 		isZero = grid==0
 		new_tile = append(2, zeros(isZero[isZero==True].size-1))
 		random.shuffle(new_tile)	
 		grid[isZero] = new_tile 
 
+	# check if there are adjacent tiles which are the same
 	def has_adjacent(self, grid):
 		Right = "right"
 		Up = "up"
@@ -76,6 +78,7 @@ class Grid:
 		else:
 			return True
 
+	# check if game can continue - if all tiles are occupied and there are no adjance tiles which are the same
 	def has_next(self, grid):
 		isZero = grid==0
 		if isZero[isZero==True].size < 1 and self.has_adjacent(grid)==False:
